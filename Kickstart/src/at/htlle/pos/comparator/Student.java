@@ -12,11 +12,35 @@ public class Student {
             this.id = id;
         }
 
-        if(Objects.requireNonNull(name, "Passed argument: 'name' must not be null").isBlank()) throw new IllegalArgumentException("Passed argument: 'name' must not be empty of blank!"); {
-            this.name = name;
+        //NOT null, empty, only whitespace
+        if(Objects.requireNonNull(name, "Passed argument: 'name' must not be null").isBlank()) {
+            throw new IllegalArgumentException("Passed argument: 'name' must not be empty of blank!");
         }
+        this.name = name;
 
+        //NOT null, empty, only whitespace
+        if(Objects.requireNonNull(name, "Passed argument: 'classroom' must not be null").isBlank()) {
+            throw new IllegalArgumentException("Passed argument: 'claasroom' must not be empty of blank!");
+        }
         this.classroom = classroom;
     }
 
+    public String toString(){
+        return String.format("Name: %s\n" +
+                "Klasse: %s\n" +
+                "ID. %d", name, classroom, id);
+    }
+
+    public int getId() {
+        return id;
+    }
+
+
+    public String getName() {
+        return name;
+    }
+
+    public String getClassroom(){
+        return classroom;
+    }
 }
