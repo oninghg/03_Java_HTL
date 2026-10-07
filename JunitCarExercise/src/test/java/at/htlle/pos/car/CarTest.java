@@ -4,6 +4,8 @@ import at.htlle.pos.car.exceptions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.CharArrayReader;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CarTest {
@@ -198,5 +200,44 @@ class CarTest {
         car.drive(100);
 
         assertEquals(59.5, car.getCurrentFuelLevel());
+    }
+
+    @Test
+    void testAccelerateWithNegativeSpeed() throws Exception {
+         car.startEngine();
+         assertThrows(IllegalArgumentException.class, () -> car.accelerate(-10));
+    }
+
+    @Test
+    void testBrakingWithNegativeSpeed() throws Exception {
+        car.startEngine();
+        car.accelerate(maxSpeed);
+        assertThrows(IllegalArgumentException.class, () -> car.brake(-10));
+    }
+
+    @Test
+    void testRefuelHappy() throws Exception {
+        //setup
+        car.startEngine();
+        car.accelerate(10);
+        car.drive(100);
+        car.brake(10);
+        car.stopEngine();
+
+        //excercise
+        car.refuel(4.5);
+        assertEquals(64, car.getCurrentFuelLevel());
+
+    }
+
+    @Test
+    void testFuelWithEngineStillRunning() throws Exception {
+        car.startEngine();
+        assertThrows(CarEngineRunningException.class, () -> car.refuel(10));
+    }
+
+    @Test
+    void testFuelWithOverfillingTank() throws Exception {
+        assertThrows(CarExceedingMaxTankCapacity.class, () -> car.refuel(100));
     }
 }
